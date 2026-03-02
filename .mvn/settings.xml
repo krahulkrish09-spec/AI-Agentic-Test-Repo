@@ -1,0 +1,41 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <mirrors>
+    <!--
+      IMPORTANT:
+      This environment blocks direct access to Maven Central through the proxy.
+      Set MAVEN_MIRROR_URL to an allowed internal mirror (Artifactory/Nexus/etc.)
+      and update the URL below.
+    -->
+    <mirror>
+      <id>internal-mirror</id>
+      <name>Internal Maven Mirror</name>
+      <url>${env.MAVEN_MIRROR_URL}</url>
+      <mirrorOf>*</mirrorOf>
+    </mirror>
+  </mirrors>
+
+  <proxies>
+    <proxy>
+      <id>default</id>
+      <active>true</active>
+      <protocol>http</protocol>
+      <host>proxy</host>
+      <port>8080</port>
+      <nonProxyHosts>localhost|127.*|*.local</nonProxyHosts>
+    </proxy>
+  </proxies>
+
+  <profiles>
+    <profile>
+      <id>require-mirror</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <maven.wagon.http.retryHandler.count>3</maven.wagon.http.retryHandler.count>
+      </properties>
+    </profile>
+  </profiles>
+</settings>
